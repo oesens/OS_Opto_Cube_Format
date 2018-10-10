@@ -1,7 +1,7 @@
-function Rita_Cube(participant_numner, monoc_eye)
+function Rita_Cube(participant_numner, object_format)
 
 if nargin < 2
-    error('Rita_Cube(participant_numner, monoc_eye)')
+    error('Rita_Cube(participant_numner, object_format)')
 end
 
 %% Start
@@ -133,13 +133,21 @@ d.trial_start_last_calibration = find(diff([d.order.is_calibration]) == 1, 1, 'l
 d.skip_to_options = [d.trial_start_second_block d.trial_start_last_calibration];
 
 %Which eye for monoc
-d.order_info.monoc_eye = lower(monoc_eye);
-if strcmp(d.order_info.monoc_eye, 'right')
-    p.IO.DIO.GOGGLE.MONOC = p.IO.DIO.GOGGLE.RIGHT;
-elseif strcmp(d.order_info.monoc_eye, 'left')
-    p.IO.DIO.GOGGLE.MONOC = p.IO.DIO.GOGGLE.LEFT;
+%d.order_info.monoc_eye = lower(monoc_eye);
+%if strcmp(d.order_info.monoc_eye, 'right')
+%   p.IO.DIO.GOGGLE.MONOC = p.IO.DIO.GOGGLE.RIGHT;
+%elseif strcmp(d.order_info.monoc_eye, 'left')
+%    p.IO.DIO.GOGGLE.MONOC = p.IO.DIO.GOGGLE.LEFT;
+%else
+%    error('Unknown monoc eye! Should be left or right.')
+%end
+p.IO.DIO.GOGGLE.MONOC = p.IO.DIO.GOGGLE.BOTH; %in case monoc is somehow used, set to both eyes (binoc)
+
+%store object format
+if exist('object_format','var')
+	d.order_info.object_format = object_format;
 else
-    error('Unknown monoc eye! Should be left or right.')
+	error('No object_format!')
 end
 
 %Create Folder(s)
